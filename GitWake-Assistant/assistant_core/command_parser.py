@@ -32,36 +32,23 @@ class CommandParser:
         # Patterns are checked in order – more specific patterns come first.
         self._patterns: list[tuple[str, re.Pattern, callable]] = [
             # ── WhatsApp file send ────────────────────────────────────────
-            # REQUIRES a file keyword (pdf, file, image, photo, document)
-            # or a file extension (.pdf, .png, .docx, etc.)
             (
                 "send_whatsapp_file",
                 re.compile(
-                    r"(?:send|share)\s+(?:to\s+)?(\w+)\s+(?:the\s+)?(.+?)\s+(?:file|pdf|image|photo|document)$"
+                    r"(?:send|share)\s+(?:to\s+)?(\w+)\s+(?:the\s+)?(.+?)\s*(?:file|pdf|image|photo|document)?$"
                     r"|"
-                    r"(?:send|share)\s+(?:to\s+)?(\w+)\s+(?:the\s+)?(.+\.\w{2,4})$"
-                    r"|"
-                    r"(?:open\s+)?whatsapp\s+(?:and\s+)?send\s+(\w+)\s+(?:the\s+)?(.+?)\s+(?:file|pdf|image|photo|document)$"
-                    r"|"
-                    r"(?:open\s+)?whatsapp\s+(?:and\s+)?send\s+(\w+)\s+(?:the\s+)?(.+\.\w{2,4})$",
+                    r"(?:open\s+)?whatsapp\s+(?:and\s+)?send\s+(\w+)\s+(?:the\s+)?(.+?)$",
                     re.IGNORECASE,
                 ),
                 self._parse_whatsapp_file,
             ),
             # ── WhatsApp text message ─────────────────────────────────────
-            # Matches: "send message to X Y", "whatsapp X Y",
-            #          "send whatsapp to X Y", "message X saying Y",
-            #          "send whatsapp text to X Y"
             (
                 "send_whatsapp",
                 re.compile(
-                    r"(?:send\s+)?(?:whatsapp|whats\s*app)\s+(?:text\s+)?(?:to\s+)?(\w+)\s+(.+)$"
-                    r"|"
-                    r"(?:send|write)\s+(?:a\s+)?(?:message|text|msg)\s+(?:to\s+)?(\w+)\s+(.+)$"
-                    r"|"
                     r"(?:send|message)\s+(?:to\s+)?(\w+)\s+(?:on\s+whatsapp\s+)?(?:saying|message|that)\s+(.+)$"
                     r"|"
-                    r"(?:message|text|msg)\s+(\w+)\s+(.+)$",
+                    r"whatsapp\s+(\w+)\s+(.+)$",
                     re.IGNORECASE,
                 ),
                 self._parse_whatsapp_text,
