@@ -20,8 +20,7 @@ PORCUPINE_ACCESS_KEY: str = os.getenv("PORCUPINE_ACCESS_KEY", "")
 GITHUB_TOKEN: str = os.getenv("GITHUB_TOKEN", "")
 GITHUB_USERNAME: str = os.getenv("GITHUB_USERNAME", "")
 
-# ── Discord ───────────────────────────────────────────────────────────────────
-DISCORD_WEBHOOK_URL: str = os.getenv("DISCORD_WEBHOOK_URL", "")
+
 
 # ── OpenAI (optional) ────────────────────────────────────────────────────────
 OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")

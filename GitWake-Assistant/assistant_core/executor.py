@@ -33,7 +33,7 @@ class Executor:
             "send_whatsapp_file": self._handle_send_whatsapp_file,
             "github_create": self._handle_github_create,
             "linkedin_post": self._handle_linkedin_post,
-            "discord_message": self._handle_discord_message,
+
             "phone_open_app": self._handle_phone_open_app,
             "phone_call": self._handle_phone_call,
             "phone_sms": self._handle_phone_sms,
@@ -128,10 +128,6 @@ class Executor:
         topic = cmd.get("topic", "")
         return create_post(topic)
 
-    def _handle_discord_message(self, cmd: dict) -> str:
-        from automation.discord_bot import send_message as discord_send
-        message = cmd.get("message", "")
-        return discord_send(message)
 
     def _handle_phone_open_app(self, cmd: dict) -> str:
         from phone_control.adb_controller import open_app
