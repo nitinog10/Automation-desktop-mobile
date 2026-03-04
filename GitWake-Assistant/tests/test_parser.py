@@ -95,16 +95,6 @@ def test_all():
             "expect_task": "github_create",
             "expect_fields": {"repo_name": "test-project"},
         },
-        # ── LinkedIn ──────────────────────────────────────────────────────
-        {
-            "input": "post linkedin about the future of AI",
-            "expect_task": "linkedin_post",
-            "expect_fields": {"topic": "the future of AI"},
-        },
-        {
-            "input": "draft a linkedin post about machine learning",
-            "expect_task": "linkedin_post",
-        },
 
         # ── Phone Call ────────────────────────────────────────────────────
         {

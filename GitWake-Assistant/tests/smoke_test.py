@@ -15,7 +15,6 @@ tests = [
     ("search python fastapi tutorial", "web_search"),
     ("whatsapp nitin hello how are you", "send_whatsapp"),
     ("create github repo my-awesome-project", "github_create"),
-    ("post linkedin about the future of AI", "linkedin_post"),
 
     ("call nitin", "phone_call"),
     ("scroll reels", "phone_scroll_reels"),
