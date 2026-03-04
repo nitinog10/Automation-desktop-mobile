@@ -10,7 +10,16 @@ Run:
 """
 
 import sys
+import os
 from pathlib import Path
+
+# Fix Windows console encoding
+if sys.platform == "win32":
+    os.environ.setdefault("PYTHONIOENCODING", "utf-8")
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
