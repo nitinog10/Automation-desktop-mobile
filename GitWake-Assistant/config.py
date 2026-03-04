@@ -59,7 +59,6 @@ APP_ALIASES: dict[str, str] = {
     "google chrome": "chrome",
     "firefox": "firefox",
 
-    "whatsapp": "whatsapp",
     "spotify": "spotify",
     "notepad": "notepad",
     "calculator": "calc",
@@ -75,7 +74,6 @@ APP_ALIASES: dict[str, str] = {
 
 # ── Android Package Map (app name → package) ─────────────────────────────────
 ANDROID_PACKAGES: dict[str, str] = {
-    "whatsapp": "com.whatsapp",
     "instagram": "com.instagram.android",
     "chrome": "com.android.chrome",
     "youtube": "com.google.android.youtube",

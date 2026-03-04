@@ -94,7 +94,7 @@ async def execute_command(request: CommandRequest):
 
     Example:
         POST /command
-        {"text": "open whatsapp and send nitin hello"}
+        {"text": "open chrome"}
     """
     try:
         from assistant_core.command_parser import CommandParser

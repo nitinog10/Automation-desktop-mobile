@@ -67,23 +67,6 @@ def test_all():
             "expect_task": "web_search",
             "expect_fields": {"query": "how to use docker"},
         },
-        # ── WhatsApp Text ─────────────────────────────────────────────────
-        {
-            "input": "whatsapp nitin hello how are you",
-            "expect_task": "send_whatsapp",
-            "expect_fields": {"contact": "nitin"},
-        },
-        {
-            "input": "send to nitin on whatsapp saying check this out",
-            "expect_task": "send_whatsapp",
-            "expect_fields": {"contact": "nitin"},
-        },
-        # ── WhatsApp File ─────────────────────────────────────────────────
-        {
-            "input": "whatsapp send nitin the resume pdf",
-            "expect_task": "send_whatsapp_file",
-            "expect_fields": {"contact": "nitin"},
-        },
         # ── GitHub ────────────────────────────────────────────────────────
         {
             "input": "create github repo my-awesome-project",

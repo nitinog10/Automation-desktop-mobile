@@ -5,16 +5,16 @@ Converts voice/text commands into structured action dictionaries using
 rule-based regex patterns. No LLM required, works completely offline.
 
 Supported intents:
-    open_app, open_folder, open_file, web_search, send_whatsapp,
-    send_whatsapp_file, github_create, linkedin_post,
+    open_app, open_folder, open_file, web_search,
+    github_create,
     phone_open_app, phone_call, phone_sms, phone_scroll_reels,
     run_terminal, repeat_last, show_history, unknown
 
 Usage:
     from assistant_core.command_parser import CommandParser
     parser = CommandParser()
-    result = parser.parse("open whatsapp and send nitin the resume pdf")
-    # → {"task": "send_whatsapp_file", "contact": "nitin", "file": "resume.pdf"}
+    result = parser.parse("open chrome")
+    # → {"task": "open_app", "app_name": "chrome"}
 """
 
 import re
