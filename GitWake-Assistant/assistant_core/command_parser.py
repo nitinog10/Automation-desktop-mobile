@@ -244,6 +244,11 @@ class CommandParser:
         return {"repo_name": repo_name}
 
     @staticmethod
+    def _parse_github_delete(m: re.Match) -> dict:
+        repo_name = m.group(1).strip().replace(" ", "-")
+        return {"repo_name": repo_name}
+
+    @staticmethod
     def _parse_linkedin_post(m: re.Match) -> dict:
         topic = m.group(1) or m.group(2)
         return {"topic": topic.strip()}
