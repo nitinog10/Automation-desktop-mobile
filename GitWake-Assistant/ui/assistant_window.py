@@ -239,7 +239,6 @@ class AssistantWindow(QMainWindow):
             f'<span style="color: {TEXT_SECONDARY};">Commands you can try:</span><br>'
             f'<span style="color: {ACCENT_GREEN};">  • "open chrome"</span><br>'
             f'<span style="color: {ACCENT_GREEN};">  • "search python tutorials"</span><br>'
-            f'<span style="color: {ACCENT_GREEN};">  • "send whatsapp to Nitin saying hello"</span><br>'
             f'<span style="color: {ACCENT_GREEN};">  • "create github repo my-project"</span><br>'
             f'<span style="color: {ACCENT_GREEN};">  • "delete github repo test-repo"</span><br>'
             f'<span style="color: {ACCENT_GREEN};">  • "call Nitin" (phone)</span><br>'
