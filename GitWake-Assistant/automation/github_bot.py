@@ -165,3 +165,44 @@ def list_repos(limit: int = 10) -> str:
 
     except requests.RequestException as e:
         return f"❌ GitHub API error: {e}"
+
+
+def delete_repo(repo_name: str) -> str:
+    """
+    Delete a GitHub repository.
+
+    Args:
+        repo_name: Name of the repository to delete.
+
+    Returns:
+        Result message.
+    """
+    if not repo_name:
+        return "⚠️ Repository name is required."
+
+    try:
+        headers = _get_headers()
+        from config import GITHUB_USERNAME
+    except ValueError as e:
+        return f"❌ {e}"
+
+    try:
+        resp = requests.delete(
+            f"{_API_BASE}/repos/{GITHUB_USERNAME}/{repo_name}",
+            headers=headers,
+        )
+
+        if resp.status_code == 204:
+            logger.info(f"Deleted GitHub repo: {repo_name}")
+            return f"✅ GitHub repo '{repo_name}' deleted successfully."
+        elif resp.status_code == 404:
+            return f"⚠️ Repo '{repo_name}' not found."
+        elif resp.status_code == 403:
+            return f"❌ Permission denied. Your token needs 'delete_repo' scope."
+        else:
+            error = resp.json().get("message", resp.text)
+            return f"❌ GitHub error ({resp.status_code}): {error}"
+
+    except requests.RequestException as e:
+        logger.error(f"GitHub delete_repo error: {e}")
+        return f"❌ GitHub API error: {e}"
