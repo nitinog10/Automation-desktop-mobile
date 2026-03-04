@@ -58,7 +58,7 @@ APP_ALIASES: dict[str, str] = {
     "chrome": "chrome",
     "google chrome": "chrome",
     "firefox": "firefox",
-    "discord": "discord",
+
     "whatsapp": "whatsapp",
     "spotify": "spotify",
     "notepad": "notepad",

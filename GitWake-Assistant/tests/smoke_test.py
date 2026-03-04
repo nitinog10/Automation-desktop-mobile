@@ -16,7 +16,7 @@ tests = [
     ("whatsapp nitin hello how are you", "send_whatsapp"),
     ("create github repo my-awesome-project", "github_create"),
     ("post linkedin about the future of AI", "linkedin_post"),
-    ("discord message hello team", "discord_message"),
+
     ("call nitin", "phone_call"),
     ("scroll reels", "phone_scroll_reels"),
     ("run command dir /B", "run_terminal"),
