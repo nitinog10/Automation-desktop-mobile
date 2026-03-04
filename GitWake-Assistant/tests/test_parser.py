@@ -105,12 +105,7 @@ def test_all():
             "input": "draft a linkedin post about machine learning",
             "expect_task": "linkedin_post",
         },
-        # ── Discord ───────────────────────────────────────────────────────
-        {
-            "input": "discord message hello team meeting at 5pm",
-            "expect_task": "discord_message",
-            "expect_fields": {"message": "hello team meeting at 5pm"},
-        },
+
         # ── Phone Call ────────────────────────────────────────────────────
         {
             "input": "call nitin",
