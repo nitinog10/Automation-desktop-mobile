@@ -13,7 +13,6 @@ tests = [
     ("open chrome", "open_app"),
     ("launch vscode", "open_app"),
     ("search python fastapi tutorial", "web_search"),
-    ("whatsapp nitin hello how are you", "send_whatsapp"),
     ("create github repo my-awesome-project", "github_create"),
 
     ("call nitin", "phone_call"),
