@@ -75,18 +75,6 @@ class CommandParser:
                 ),
                 self._parse_github_delete,
             ),
-            # ── LinkedIn post ─────────────────────────────────────────────
-            (
-                "linkedin_post",
-                re.compile(
-                    r"(?:post|write|draft|create)\s+(?:a\s+)?(?:linkedin|linked in)\s+(?:post\s+)?(?:about\s+)?(.+)$"
-                    r"|"
-                    r"linkedin\s+(?:post\s+)?(?:about\s+)?(.+)$",
-                    re.IGNORECASE,
-                ),
-                self._parse_linkedin_post,
-            ),
-
             # ── Phone: call ───────────────────────────────────────────────
             (
                 "phone_call",
@@ -247,11 +235,6 @@ class CommandParser:
     def _parse_github_delete(m: re.Match) -> dict:
         repo_name = m.group(1).strip().replace(" ", "-")
         return {"repo_name": repo_name}
-
-    @staticmethod
-    def _parse_linkedin_post(m: re.Match) -> dict:
-        topic = m.group(1) or m.group(2)
-        return {"topic": topic.strip()}
 
 
     @staticmethod
