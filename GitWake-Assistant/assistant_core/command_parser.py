@@ -31,13 +31,15 @@ class CommandParser:
         """Initialize the parser with ordered intent patterns."""
         # Patterns are checked in order – more specific patterns come first.
         self._patterns: list[tuple[str, re.Pattern, callable]] = [
-            # ── WhatsApp file send ────────────────────────────────────────
+            # ── WhatsApp file send (REQUIRES file/pdf/image/document keyword) ──
             (
                 "send_whatsapp_file",
                 re.compile(
-                    r"(?:send|share)\s+(?:to\s+)?(\w+)\s+(?:the\s+)?(.+?)\s*(?:file|pdf|image|photo|document)?$"
+                    r"(?:send|share)\s+(?:to\s+)?(\w+)\s+(?:the\s+)?(.+?)\s+(?:file|pdf|image|photo|document)$"
                     r"|"
-                    r"(?:open\s+)?whatsapp\s+(?:and\s+)?send\s+(\w+)\s+(?:the\s+)?(.+?)$",
+                    r"(?:open\s+)?whatsapp\s+(?:and\s+)?send\s+(\w+)\s+(?:the\s+)?(.+?)\s+(?:file|pdf|image|photo|document)$"
+                    r"|"
+                    r"(?:send|share)\s+(?:to\s+)?(\w+)\s+(?:the\s+)?(.+?\.\w{2,5})$",
                     re.IGNORECASE,
                 ),
                 self._parse_whatsapp_file,
@@ -46,6 +48,8 @@ class CommandParser:
             (
                 "send_whatsapp",
                 re.compile(
+                    r"(?:send\s+)?(?:message|whatsapp|text)\s+(?:to\s+)?(\w+)\s+(.+)$"
+                    r"|"
                     r"(?:send|message)\s+(?:to\s+)?(\w+)\s+(?:on\s+whatsapp\s+)?(?:saying|message|that)\s+(.+)$"
                     r"|"
                     r"whatsapp\s+(\w+)\s+(.+)$",
