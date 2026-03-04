@@ -29,8 +29,6 @@ class Executor:
             "open_file": self._handle_open_file,
             "web_search": self._handle_web_search,
             "run_terminal": self._handle_run_terminal,
-            "send_whatsapp": self._handle_send_whatsapp,
-            "send_whatsapp_file": self._handle_send_whatsapp_file,
             "github_create": self._handle_github_create,
             "github_delete": self._handle_github_delete,
 
@@ -105,18 +103,6 @@ class Executor:
         from automation.terminal_runner import run_command as do_run
         command_str = cmd.get("command", "")
         return do_run(command_str)
-
-    def _handle_send_whatsapp(self, cmd: dict) -> str:
-        from automation.whatsapp_bot import send_message
-        contact = cmd.get("contact", "")
-        message = cmd.get("message", "")
-        return send_message(contact, message)
-
-    def _handle_send_whatsapp_file(self, cmd: dict) -> str:
-        from automation.whatsapp_bot import send_file
-        contact = cmd.get("contact", "")
-        file_path = cmd.get("file", "")
-        return send_file(contact, file_path)
 
     def _handle_github_create(self, cmd: dict) -> str:
         from automation.github_bot import create_repo
