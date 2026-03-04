@@ -66,6 +66,15 @@ class CommandParser:
                 ),
                 self._parse_github_create,
             ),
+            # ── GitHub delete repo ────────────────────────────────────────
+            (
+                "github_delete",
+                re.compile(
+                    r"(?:delete|remove)\s+(?:the\s+)?(?:github\s+)?repo(?:sitory)?\s+(?:called|named)?\s*(.+)$",
+                    re.IGNORECASE,
+                ),
+                self._parse_github_delete,
+            ),
             # ── LinkedIn post ─────────────────────────────────────────────
             (
                 "linkedin_post",
