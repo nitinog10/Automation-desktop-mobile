@@ -6,7 +6,7 @@ rule-based regex patterns. No LLM required, works completely offline.
 
 Supported intents:
     open_app, open_folder, open_file, web_search, send_whatsapp,
-    send_whatsapp_file, github_create, linkedin_post, discord_message,
+    send_whatsapp_file, github_create, linkedin_post,
     phone_open_app, phone_call, phone_sms, phone_scroll_reels,
     run_terminal, repeat_last, show_history, unknown
 
@@ -73,17 +73,7 @@ class CommandParser:
                 ),
                 self._parse_linkedin_post,
             ),
-            # ── Discord message ───────────────────────────────────────────
-            (
-                "discord_message",
-                re.compile(
-                    r"(?:send\s+)?(?:discord|server)\s+(?:message\s+)?(.+)$"
-                    r"|"
-                    r"(?:message|send)\s+(?:to\s+)?discord\s+(.+)$",
-                    re.IGNORECASE,
-                ),
-                self._parse_discord_message,
-            ),
+
             # ── Phone: call ───────────────────────────────────────────────
             (
                 "phone_call",
@@ -243,10 +233,6 @@ class CommandParser:
         topic = m.group(1) or m.group(2)
         return {"topic": topic.strip()}
 
-    @staticmethod
-    def _parse_discord_message(m: re.Match) -> dict:
-        message = m.group(1) or m.group(2)
-        return {"message": message.strip()}
 
     @staticmethod
     def _parse_phone_call(m: re.Match) -> dict:
