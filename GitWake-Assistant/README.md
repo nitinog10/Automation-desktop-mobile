@@ -18,9 +18,7 @@
 | **🧠 Command Parser** | Rule-based NLP with 15+ intent patterns |
 | **💻 Laptop Control** | Open apps, files, folders, web search, terminal commands |
 | **📱 Phone Control** | Open apps, make calls, send SMS, scroll reels (via ADB) |
-| **💬 WhatsApp** | Send messages & files via WhatsApp Web + Selenium |
 | **🐙 GitHub** | Create repos, push files via REST API |
-| **💼 LinkedIn** | Generate & paste AI-powered posts |
 | **🎮 Discord** | Send messages via webhooks |
 | **🌐 Cross-Device** | FastAPI server – control from any device on LAN |
 | **🖥️ UI** | Floating PyQt6 sidebar with dark futuristic theme |
@@ -45,9 +43,7 @@ GitWake-Assistant/
 │   ├── app_launcher.py       # Open apps, files, folders
 │   ├── web_search.py         # Google search
 │   ├── terminal_runner.py    # Run shell commands
-│   ├── whatsapp_bot.py       # WhatsApp Web automation
 │   ├── github_bot.py         # GitHub API
-│   ├── linkedin_bot.py       # LinkedIn post automation
 │   └── discord_bot.py        # Discord webhooks
 │
 ├── phone_control/            # Android phone automation
@@ -81,7 +77,6 @@ GitWake-Assistant/
 ### Prerequisites
 
 - **Python 3.10+** → [Download](https://www.python.org/downloads/)
-- **Google Chrome** → For WhatsApp/LinkedIn automation
 - **Git** → For version control
 - **ADB** (optional) → For Android phone control
 
@@ -186,15 +181,7 @@ Or visit `http://<laptop-ip>:8000/docs` for the interactive API documentation.
 "search python tutorials"
 "run command dir /B"
 "create github repo my-project"
-"post linkedin about AI trends"
 "discord message hello team"
-```
-
-### WhatsApp Commands
-```
-"whatsapp nitin hello how are you"
-"send to nitin the resume pdf"
-"open whatsapp and send nitin hello"
 ```
 
 ### Phone Commands
@@ -289,8 +276,8 @@ manager.register(plugin)
 └──────┬────┬────┬────┬────┬────┬────┬────────┘
        │    │    │    │    │    │    │
        ▼    ▼    ▼    ▼    ▼    ▼    ▼
-    App  Web  WApp GitHub LinkedIn Discord Phone
-    Open Search Bot   Bot    Bot     Bot   ADB
+    App  Web  GitHub Discord Phone
+    Open Search Bot    Bot    ADB
 ```
 
 ---
@@ -299,7 +286,6 @@ manager.register(plugin)
 
 - **Terminal runner** blocks dangerous commands (`format`, `del /s`, `shutdown`, etc.)
 - **API keys** are stored in `.env` (gitignored)
-- **WhatsApp/LinkedIn** require manual first-login (no stored passwords)
 
 ---
 
