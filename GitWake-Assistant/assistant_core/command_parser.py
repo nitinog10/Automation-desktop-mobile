@@ -213,8 +213,9 @@ class CommandParser:
 
     @staticmethod
     def _parse_whatsapp_file(m: re.Match) -> dict:
-        contact = m.group(1) or m.group(3)
-        file = m.group(2) or m.group(4)
+        # 3 alternations → groups (1,2), (3,4), (5,6)
+        contact = m.group(1) or m.group(3) or m.group(5)
+        file = m.group(2) or m.group(4) or m.group(6)
         # Normalize file extension
         file = file.strip()
         if not any(file.endswith(ext) for ext in [".pdf", ".png", ".jpg", ".docx", ".txt"]):
@@ -223,8 +224,9 @@ class CommandParser:
 
     @staticmethod
     def _parse_whatsapp_text(m: re.Match) -> dict:
-        contact = m.group(1) or m.group(3)
-        message = m.group(2) or m.group(4)
+        # 3 alternations → groups (1,2), (3,4), (5,6)
+        contact = m.group(1) or m.group(3) or m.group(5)
+        message = m.group(2) or m.group(4) or m.group(6)
         return {"contact": contact.strip(), "message": message.strip()}
 
     @staticmethod
