@@ -1,0 +1,33 @@
+# ===================================
+# GitWake Assistant – Dependencies
+# ===================================
+
+# --- Wake Word Detection ---
+pvporcupine>=3.0.0
+pvrecorder>=1.2.0
+
+# --- Voice / Speech ---
+SpeechRecognition>=3.10.0
+PyAudio>=0.2.13
+
+# --- Automation ---
+pyautogui>=0.9.54
+selenium>=4.15.0
+undetected-chromedriver>=3.5.0
+webbrowser-open>=0.0.1
+
+# --- API / Server ---
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+requests>=2.31.0
+
+# --- UI ---
+PyQt6>=6.6.0
+
+# --- Utilities ---
+python-dotenv>=1.0.0
+keyboard>=0.13.5
+pydub>=0.25.1
+
+# --- Optional: Whisper (offline STT, needs ~1GB RAM) ---
+# openai-whisper>=20231117
