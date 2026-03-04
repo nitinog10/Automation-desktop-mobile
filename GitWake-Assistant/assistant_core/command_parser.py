@@ -31,32 +31,6 @@ class CommandParser:
         """Initialize the parser with ordered intent patterns."""
         # Patterns are checked in order – more specific patterns come first.
         self._patterns: list[tuple[str, re.Pattern, callable]] = [
-            # ── WhatsApp file send (REQUIRES file/pdf/image/document keyword) ──
-            (
-                "send_whatsapp_file",
-                re.compile(
-                    r"(?:send|share)\s+(?:to\s+)?(\w+)\s+(?:the\s+)?(.+?)\s+(?:file|pdf|image|photo|document)$"
-                    r"|"
-                    r"(?:open\s+)?whatsapp\s+(?:and\s+)?send\s+(\w+)\s+(?:the\s+)?(.+?)\s+(?:file|pdf|image|photo|document)$"
-                    r"|"
-                    r"(?:send|share)\s+(?:to\s+)?(\w+)\s+(?:the\s+)?(.+?\.\w{2,5})$",
-                    re.IGNORECASE,
-                ),
-                self._parse_whatsapp_file,
-            ),
-            # ── WhatsApp text message ─────────────────────────────────────
-            (
-                "send_whatsapp",
-                re.compile(
-                    r"(?:send\s+)?(?:message|whatsapp|text)\s+(?:to\s+)?(\w+)\s+(.+)$"
-                    r"|"
-                    r"(?:send|message)\s+(?:to\s+)?(\w+)\s+(?:on\s+whatsapp\s+)?(?:saying|message|that)\s+(.+)$"
-                    r"|"
-                    r"whatsapp\s+(\w+)\s+(.+)$",
-                    re.IGNORECASE,
-                ),
-                self._parse_whatsapp_text,
-            ),
             # ── GitHub create repo ────────────────────────────────────────
             (
                 "github_create",
@@ -207,24 +181,6 @@ class CommandParser:
 
     # ─── Handler Functions ────────────────────────────────────────────────────
     # Each handler extracts parameters from the regex match groups.
-
-    @staticmethod
-    def _parse_whatsapp_file(m: re.Match) -> dict:
-        # 3 alternations → groups (1,2), (3,4), (5,6)
-        contact = m.group(1) or m.group(3) or m.group(5)
-        file = m.group(2) or m.group(4) or m.group(6)
-        # Normalize file extension
-        file = file.strip()
-        if not any(file.endswith(ext) for ext in [".pdf", ".png", ".jpg", ".docx", ".txt"]):
-            file += ".pdf"  # default assumption
-        return {"contact": contact.strip(), "file": file}
-
-    @staticmethod
-    def _parse_whatsapp_text(m: re.Match) -> dict:
-        # 3 alternations → groups (1,2), (3,4), (5,6)
-        contact = m.group(1) or m.group(3) or m.group(5)
-        message = m.group(2) or m.group(4) or m.group(6)
-        return {"contact": contact.strip(), "message": message.strip()}
 
     @staticmethod
     def _parse_github_create(m: re.Match) -> dict:
