@@ -33,7 +33,6 @@ class Executor:
             "send_whatsapp_file": self._handle_send_whatsapp_file,
             "github_create": self._handle_github_create,
             "github_delete": self._handle_github_delete,
-            "linkedin_post": self._handle_linkedin_post,
 
             "phone_open_app": self._handle_phone_open_app,
             "phone_call": self._handle_phone_call,
@@ -128,11 +127,6 @@ class Executor:
         from automation.github_bot import delete_repo
         repo_name = cmd.get("repo_name", "")
         return delete_repo(repo_name)
-
-    def _handle_linkedin_post(self, cmd: dict) -> str:
-        from automation.linkedin_bot import create_post
-        topic = cmd.get("topic", "")
-        return create_post(topic)
 
 
     def _handle_phone_open_app(self, cmd: dict) -> str:
