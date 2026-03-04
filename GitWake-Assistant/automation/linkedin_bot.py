@@ -1,10 +1,12 @@
 """
-linkedin_bot.py – LinkedIn Post Automation
-=============================================
-Generates a LinkedIn post using AI (or a template) and pastes it into
-the LinkedIn post editor via Selenium + pyautogui.
+linkedin_bot.py – LinkedIn Post Automation (Desktop App)
+==========================================================
+Opens the LinkedIn app (or LinkedIn in browser as fallback), generates
+a post using AI or template, and pastes it into the post editor.
 
-Requires manual LinkedIn login on first run (persisted via Chrome profile).
+Works with:
+    - LinkedIn Windows app (if installed from Microsoft Store)
+    - LinkedIn in Chrome (fallback)
 
 Usage:
     from automation.linkedin_bot import create_post
@@ -12,31 +14,27 @@ Usage:
 """
 
 import time
+import subprocess
 import logging
-from typing import Optional
 
 import pyautogui
 
 logger = logging.getLogger(__name__)
 
+pyautogui.FAILSAFE = True
+pyautogui.PAUSE = 0.3
+
 
 def _generate_post_content(topic: str) -> str:
     """
     Generate LinkedIn post content about the given topic.
-
     Tries OpenAI API first; falls back to a professional template.
-
-    Args:
-        topic: Subject of the post.
-
-    Returns:
-        Generated post text.
     """
     # Try LLM generation if API key is available
     try:
         from config import OPENAI_API_KEY
 
-        if OPENAI_API_KEY:
+        if OPENAI_API_KEY and not OPENAI_API_KEY.startswith("your_"):
             import requests
 
             resp = requests.post(
@@ -91,86 +89,101 @@ def _generate_post_content(topic: str) -> str:
     )
 
 
+def _copy_to_clipboard(text: str) -> bool:
+    """Copy text to clipboard using PowerShell (handles Unicode)."""
+    try:
+        # Escape double quotes for PowerShell
+        escaped = text.replace('"', '`"').replace('\n', '`n')
+        process = subprocess.Popen(
+            ['powershell', '-command', f'Set-Clipboard -Value "{escaped}"'],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        process.wait()
+        return True
+    except Exception as e:
+        logger.error(f"Clipboard copy failed: {e}")
+        return False
+
+
+def _open_linkedin() -> bool:
+    """Open LinkedIn – tries desktop app first, then browser."""
+    try:
+        # Method 1: Try LinkedIn Windows app
+        subprocess.Popen('start linkedin:', shell=True)
+        time.sleep(4)
+        logger.info("Opened LinkedIn app")
+        return True
+    except Exception:
+        pass
+
+    try:
+        # Method 2: Open LinkedIn in browser
+        import webbrowser
+        webbrowser.open("https://www.linkedin.com/feed/")
+        time.sleep(5)
+        logger.info("Opened LinkedIn in browser")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to open LinkedIn: {e}")
+        return False
+
+
 def create_post(topic: str) -> str:
     """
     Generate and paste a LinkedIn post about the given topic.
 
-    Opens LinkedIn in Chrome, navigates to the post editor, and pastes
-    the generated content.
+    Steps:
+        1. Generate post content (AI or template)
+        2. Copy to clipboard
+        3. Open LinkedIn
+        4. Navigate to post creator
+        5. Paste content
 
     Args:
         topic: Subject for the post.
 
     Returns:
-        Result message.
+        Result message with generated content preview.
     """
     if not topic:
         return "⚠️ Post topic is required."
 
-    driver: Optional[object] = None
     try:
-        import undetected_chromedriver as uc
-        from selenium.webdriver.common.by import By
-        from selenium.webdriver.support.ui import WebDriverWait
-        from selenium.webdriver.support import expected_conditions as EC
-        from config import CHROME_PROFILE_DIR, CHROME_PROFILE_NAME
-
-        # Generate the post content
+        # Step 1: Generate content
         content = _generate_post_content(topic)
+        logger.info(f"Generated post about '{topic}' ({len(content)} chars)")
 
-        # Launch Chrome with profile
-        options = uc.ChromeOptions()
-        options.add_argument(f"--user-data-dir={CHROME_PROFILE_DIR}")
-        options.add_argument(f"--profile-directory={CHROME_PROFILE_NAME}")
-        driver = uc.Chrome(options=options)
+        # Step 2: Copy to clipboard
+        if not _copy_to_clipboard(content):
+            return "❌ Failed to copy post to clipboard."
 
-        # Go to LinkedIn
-        driver.get("https://www.linkedin.com/feed/")
-        time.sleep(5)
+        # Step 3: Open LinkedIn
+        if not _open_linkedin():
+            return "❌ Could not open LinkedIn."
 
-        # Click "Start a post" button
-        try:
-            start_post = WebDriverWait(driver, 20).until(
-                EC.element_to_be_clickable(
-                    (By.XPATH, '//button[contains(@class,"share-box-feed-entry__trigger")]')
-                )
-            )
-            start_post.click()
-            time.sleep(2)
-        except Exception:
-            logger.warning("Could not find 'Start a post' button, trying alternative...")
-            # Try alternative selector
-            start_post = driver.find_element(
-                By.XPATH, '//button[contains(text(),"Start a post")]'
-            )
-            start_post.click()
-            time.sleep(2)
+        # Step 4: Wait for LinkedIn to load, then click "Start a post"
+        time.sleep(3)
 
-        # Copy content to clipboard and paste
-        import subprocess
-
-        process = subprocess.Popen(
-            ["clip"], stdin=subprocess.PIPE, shell=True
-        )
-        process.communicate(content.encode("utf-16-le"))
-
-        # Paste into the editor
-        pyautogui.hotkey("ctrl", "v")
+        # Try clicking the "Start a post" area
+        # On LinkedIn web/app, we can Tab to the post button or click it
+        # Use keyboard shortcut or search for the post button
+        pyautogui.press('tab')
+        time.sleep(0.5)
+        pyautogui.press('enter')  # Click "Start a post"
         time.sleep(2)
+
+        # Step 5: Paste the generated content
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(1)
 
         logger.info(f"LinkedIn post about '{topic}' pasted into editor")
         return (
             f"✅ LinkedIn post about '{topic}' is ready in the editor!\n"
             f"Review and click 'Post' to publish.\n\n"
-            f"Generated content:\n{content[:200]}..."
+            f"Preview: {content[:150]}..."
         )
 
-    except ImportError as e:
-        return f"❌ Missing dependency: {e}"
     except Exception as e:
         logger.error(f"LinkedIn post error: {e}")
         return f"❌ LinkedIn error: {e}"
-
-    finally:
-        # Don't close – let user review and post
-        pass
