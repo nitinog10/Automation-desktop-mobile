@@ -431,4 +431,3 @@ sequenceDiagram
 
 ---
 
-*This is what takes DocuVerse from a hackathon project to a product.*
